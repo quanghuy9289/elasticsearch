@@ -8,8 +8,10 @@ services:
       - node.name=elasticsearch
       - cluster.name=datasearch
       - bootstrap.memory_lock=true
+      - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - cluster.initial_master_nodes=elasticsearch
+      - ELASTIC_PASSWORD=Admin123
+      - xpack.security.enabled=true
     ulimits:
       memlock:
         soft: -1
@@ -21,8 +23,16 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.6
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=Admin123
     ports:
       - "5601:5601"
+    links:
+      - "elasticsearch"
+    depends_on:
+      - elasticsearch
 
 volumes:
   esdata:

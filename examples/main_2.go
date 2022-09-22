@@ -9,7 +9,11 @@ import (
 )
 
 func main() {
-	es, err := elasticsearch.NewDefaultClient()
+	// es, err := elasticsearch.NewDefaultClient()
+	es, err := elasticsearch.NewClient(elasticsearch.Config{
+		Username: "elastic",
+		Password: "Admin123",
+	})
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
 	}
